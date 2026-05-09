@@ -1,0 +1,262 @@
+/* ==========================================================================
+   Components: Media Elements & Interactive Modules
+   ========================================================================== */
+
+/* Social Links */
+.social-links {
+    position: absolute;
+    top: calc(60px + 1rem);
+    /* Match the height of the 60px scroll line + gap */
+    right: var(--space-md);
+    display: flex;
+    gap: 1.25rem;
+    z-index: 100;
+}
+
+.social-links a {
+    display: block;
+    width: 20px;
+    height: 20px;
+    opacity: 0.8;
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.social-links a:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.social-links img {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .social-links {
+        top: calc(60px + 1rem);
+        right: var(--space-md);
+        gap: 1.25rem;
+    }
+
+    .social-links a {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* Media Containers (Lazy Loading Images & Video) */
+.media-container {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--clr-grey-light);
+}
+
+.media-container img,
+.media-container video,
+.media-container iframe {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    transform: scale(1.05);
+    /* Slight scale for parallax/reveal effect */
+    transition: transform var(--transition-cinematic), opacity var(--transition-smooth);
+    opacity: 0;
+}
+
+.media-container.is-loaded img,
+.media-container.is-loaded video,
+.media-container.is-loaded iframe {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.iframe-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    /* 16:9 Aspect Ratio */
+    height: 0;
+}
+
+.iframe-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    border: 0;
+    pointer-events: none;
+    /* Blocks native YouTube clicking/pausing/UI overlays completely */
+}
+
+/* Custom YouTube Audio Controls */
+.yt-custom-controls {
+    position: absolute;
+    bottom: var(--space-md);
+    right: var(--space-md);
+    z-index: 10;
+    opacity: 0;
+    transition: opacity var(--transition-smooth);
+    pointer-events: auto;
+    /* explicitly allow button hovering/clicking over iframe */
+    display: flex;
+    gap: 0.5rem;
+}
+
+.iframe-wrapper:hover .yt-custom-controls {
+    opacity: 1;
+}
+
+.yt-custom-controls .yt-btn {
+    background: rgba(0, 0, 0, 0.85);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(4px);
+    transition: background var(--transition-fast), color var(--transition-fast);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 0.8rem;
+    text-transform: lowercase;
+    letter-spacing: 0.05em;
+    cursor: none;
+    /* using our custom cursor outline still */
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.yt-custom-controls .yt-btn:hover {
+    background: #000000;
+}
+
+/* Fullscreen Image Lightbox */
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(5, 5, 5, 0.95);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-smooth), visibility var(--transition-smooth);
+    cursor: zoom-out;
+    /* Indicate it can be closed by clicking */
+}
+
+.lightbox.is-active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lightbox-content {
+    max-width: 90vw;
+    max-height: 90vh;
+    position: relative;
+    transform: scale(0.95);
+    transition: transform var(--transition-smooth);
+}
+
+.lightbox.is-active .lightbox-content {
+    transform: scale(1);
+}
+
+.lightbox-content img {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+    display: block;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Lightbox Close Button */
+.lightbox-close {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    background: transparent;
+    border: none;
+    color: var(--clr-white);
+    font-family: inherit;
+    font-size: 1rem;
+    text-transform: lowercase;
+    letter-spacing: 0.1em;
+    cursor: none;
+    /* Keep custom cursor interaction */
+    z-index: 1001;
+    padding: 0.5rem;
+    opacity: 0.7;
+    transition: opacity var(--transition-fast);
+}
+
+.lightbox-close:hover {
+    opacity: 1;
+}
+
+/* Make gallery images look clickable */
+.media-container img {
+    cursor: zoom-in;
+    transition: filter var(--transition-fast);
+}
+
+.media-container img:hover {
+    filter: brightness(0.9);
+}
+
+/* Lightbox Navigation */
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: none;
+    z-index: 1001;
+    padding: 1.5rem;
+    opacity: 0.5;
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
+
+    /* Hide the screen reader text visually */
+    color: transparent;
+}
+
+/* Draw sleek geometric arrows using CSS borders */
+.lightbox-nav::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 20px;
+    border: 4px solid #ffffff;
+    border-top: none;
+    border-right: none;
+}
+
+.lightbox-prev {
+    left: var(--space-md);
+}
+
+.lightbox-prev::before {
+    transform: rotate(45deg);
+}
+
+.lightbox-next {
+    right: var(--space-md);
+}
+
+.lightbox-next::before {
+    transform: rotate(-135deg);
+}
+
+.lightbox-nav:hover {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1);
+}

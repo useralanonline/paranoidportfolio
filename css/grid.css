@@ -1,0 +1,127 @@
+/* ==========================================================================
+   CSS Grid & Layout - Avant-Garde Structure
+   ========================================================================== */
+
+.page {
+    width: 100vw;
+    min-height: 100vh;
+    padding: var(--space-md);
+}
+
+/* Even Grid Layout for Projects */
+.avant-garde-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+    padding: var(--space-lg) 0;
+}
+
+@media (min-width: 768px) {
+    .avant-garde-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-md);
+        padding: var(--space-xl) 0;
+        align-items: center;
+        /* helps center differently sized aspect ratios within the row */
+    }
+}
+
+@media (min-width: 1200px) {
+    .avant-garde-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Ensure images fit within their grid cells while maintaining aspect ratios */
+.grid-item {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+
+/* Hero Section */
+.hero-section {
+    min-height: calc(100vh - var(--space-xl));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+.hero-content {
+    z-index: 10;
+    width: max-content;
+    position: relative; /* Context for absolute positioning of children */
+}
+
+/* Base styles for both states */
+.hero-state-original,
+.hero-state-scrolled {
+    transition: opacity 0.8s ease;
+}
+
+/* Original text visible initially */
+.hero-state-original {
+    opacity: 1;
+}
+
+/* Scrolled text hidden initially */
+.hero-state-scrolled {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+}
+
+/* Triggered by JS class */
+.hero-content.is-scrolled .hero-state-original {
+    opacity: 0;
+}
+
+.hero-content.is-scrolled .hero-state-scrolled {
+    opacity: 1;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.8rem;
+    text-transform: lowercase;
+    letter-spacing: 0.1em;
+}
+
+.scroll-indicator .line {
+    width: 1px;
+    height: 60px;
+    background: var(--clr-white);
+    transform-origin: top;
+    animation: scrollLine 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@keyframes scrollLine {
+    0% {
+        transform: scaleY(0);
+        transform-origin: top;
+    }
+
+    50% {
+        transform: scaleY(1);
+        transform-origin: top;
+    }
+
+    50.1% {
+        transform: scaleY(1);
+        transform-origin: bottom;
+    }
+
+    100% {
+        transform: scaleY(0);
+        transform-origin: bottom;
+    }
+}
