@@ -216,6 +216,7 @@ class App {
 
     rebindHoverEffects() {
         const interactables = document.querySelectorAll('a, button, .media-container');
+        const videoInteractables = document.querySelectorAll('.iframe-wrapper');
 
         interactables.forEach(el => {
             el.addEventListener('mouseenter', () => {
@@ -223,6 +224,17 @@ class App {
             });
             el.addEventListener('mouseleave', () => {
                 if (this.cursorOutline) this.cursorOutline.classList.remove('hovering');
+            });
+        });
+
+        videoInteractables.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                if (this.cursorDot) this.cursorDot.classList.add('video-hovering');
+                if (this.cursorOutline) this.cursorOutline.classList.add('video-hovering');
+            });
+            el.addEventListener('mouseleave', () => {
+                if (this.cursorDot) this.cursorDot.classList.remove('video-hovering');
+                if (this.cursorOutline) this.cursorOutline.classList.remove('video-hovering');
             });
         });
     }

@@ -135,6 +135,15 @@ a {
     border-color: transparent;
 }
 
+.cursor-dot.video-hovering {
+    background-color: #fcfcfc;
+}
+
+.cursor-outline.video-hovering {
+    border-color: rgba(252, 252, 252, 0.8);
+    background-color: rgba(252, 252, 252, 0.08);
+}
+
 @media (hover: none) and (pointer: coarse) {
 
     .cursor-dot,
