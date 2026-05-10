@@ -343,10 +343,22 @@ class App {
 
         // Navigation Buttons
         if (this.lightboxPrev) {
-            this.lightboxPrev.addEventListener('click', () => this.prevImage());
+            this.lightboxPrev.addEventListener('click', () => {
+                if (this.lightboxMode === 'video') {
+                    this.prevVideo();
+                } else {
+                    this.prevImage();
+                }
+            });
         }
         if (this.lightboxNext) {
-            this.lightboxNext.addEventListener('click', () => this.nextImage());
+            this.lightboxNext.addEventListener('click', () => {
+                if (this.lightboxMode === 'video') {
+                    this.nextVideo();
+                } else {
+                    this.nextImage();
+                }
+            });
         }
 
         // Keyboard Navigation
@@ -442,6 +454,7 @@ class App {
         document.body.style.overflow = ''; // Restore scrolling
         if (this.lightboxContent) this.lightboxContent.classList.remove('is-video');
         if (this.lightboxVideo) this.lightboxVideo.src = '';
+        this.resumePreviewVideos();
 
         // Clear src after transition so it doesn't ghost on next open
         setTimeout(() => {
@@ -449,6 +462,20 @@ class App {
                 this.lightboxImage.src = '';
             }
         }, 600); // Matches var(--transition-smooth)
+    }
+
+    resumePreviewVideos() {
+        this.ytPlayers.forEach(player => {
+            if (!player) return;
+
+            if (typeof player.mute === 'function') {
+                player.mute();
+            }
+
+            if (typeof player.playVideo === 'function') {
+                player.playVideo();
+            }
+        });
     }
 }
 
