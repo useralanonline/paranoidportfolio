@@ -73,6 +73,15 @@
     transform: scale(1);
 }
 
+.media-container.is-loaded:hover img,
+.media-container.is-loaded:hover video {
+    transform: scale(1.08);
+}
+
+.media-container.is-loaded:hover iframe {
+    transform: scale(1.04);
+}
+
 .iframe-wrapper {
     position: relative;
     width: 100%;
@@ -205,7 +214,7 @@
 /* Make gallery images look clickable */
 .media-container img {
     cursor: zoom-in;
-    transition: filter var(--transition-fast);
+    transition: filter var(--transition-fast), transform var(--transition-cinematic);
 }
 
 .media-container img:hover {
