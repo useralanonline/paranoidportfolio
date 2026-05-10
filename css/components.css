@@ -105,15 +105,15 @@
 /* Custom YouTube Audio Controls */
 .yt-custom-controls {
     position: absolute;
-    bottom: var(--space-md);
-    right: var(--space-md);
+    bottom: 0.85rem;
+    right: 0.85rem;
     z-index: 10;
     opacity: 0;
     transition: opacity var(--transition-smooth);
     pointer-events: auto;
     /* explicitly allow button hovering/clicking over iframe */
     display: flex;
-    gap: 0.5rem;
+    gap: 0.35rem;
 }
 
 .iframe-wrapper:hover .yt-custom-controls {
@@ -121,27 +121,108 @@
 }
 
 .yt-custom-controls .yt-btn {
-    background: rgba(0, 0, 0, 0.85);
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 30px;
+    height: 30px;
+    background: rgba(0, 0, 0, 0.48);
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.28);
     backdrop-filter: blur(4px);
-    transition: background var(--transition-fast), color var(--transition-fast);
+    transition: background var(--transition-fast), border-color var(--transition-fast), opacity var(--transition-fast);
     color: #ffffff;
     font-family: inherit;
-    font-size: 0.8rem;
-    text-transform: lowercase;
-    letter-spacing: 0.05em;
+    font-size: 0;
+    line-height: 0;
     cursor: none;
     /* using our custom cursor outline still */
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    opacity: 0.78;
 }
 
 .yt-custom-controls .yt-btn:hover {
-    background: #000000;
+    background: rgba(0, 0, 0, 0.78);
+    border-color: rgba(255, 255, 255, 0.8);
+    opacity: 1;
+}
+
+.yt-custom-controls .yt-btn::before,
+.yt-custom-controls .yt-btn::after {
+    content: '';
+    display: block;
+    position: absolute;
+}
+
+.play-btn::before {
+    width: 0;
+    height: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 8px solid #ffffff;
+    margin-left: 2px;
+}
+
+.play-btn.is-playing::before,
+.play-btn.is-playing::after {
+    width: 3px;
+    height: 10px;
+    background: #ffffff;
+    border: 0;
+}
+
+.play-btn.is-playing::before {
+    margin-left: -4px;
+}
+
+.play-btn.is-playing::after {
+    margin-left: 4px;
+}
+
+.mute-btn::before {
+    width: 7px;
+    height: 8px;
+    border-right: 6px solid #ffffff;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    margin-left: -4px;
+}
+
+.mute-btn::after {
+    width: 7px;
+    height: 7px;
+    border-top: 2px solid #ffffff;
+    border-right: 2px solid #ffffff;
+    border-radius: 0 8px 0 0;
+    transform: rotate(45deg);
+    margin-left: 7px;
+}
+
+.mute-btn.is-muted::after {
+    width: 12px;
+    height: 2px;
+    border: 0;
+    background: #ffffff;
+    transform: rotate(-45deg);
+    margin-left: 7px;
+}
+
+.yt-link::before {
+    width: 10px;
+    height: 10px;
+    border-top: 2px solid #ffffff;
+    border-right: 2px solid #ffffff;
+    transform: translate(-1px, 1px);
+}
+
+.yt-link::after {
+    width: 9px;
+    height: 2px;
+    background: #ffffff;
+    transform: rotate(-45deg) translate(1px, 1px);
+    transform-origin: right center;
 }
 
 /* Fullscreen Image Lightbox */

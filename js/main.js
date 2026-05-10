@@ -96,41 +96,47 @@ class App {
 
                         // Play/Pause Button
                         const playBtn = document.createElement('button');
-                        playBtn.className = 'yt-btn play-btn';
-                        playBtn.textContent = 'pause'; // Starts playing
+                        playBtn.className = 'yt-btn play-btn is-playing';
+                        playBtn.type = 'button';
+                        playBtn.setAttribute('aria-label', 'Pause video');
 
                         playBtn.addEventListener('click', (e) => {
                             e.stopPropagation();
                             const state = playerInstance.getPlayerState();
                             if (state === YT.PlayerState.PLAYING) {
                                 playerInstance.pauseVideo();
-                                playBtn.textContent = 'play';
+                                playBtn.classList.remove('is-playing');
+                                playBtn.setAttribute('aria-label', 'Play video');
                             } else {
                                 playerInstance.playVideo();
-                                playBtn.textContent = 'pause';
+                                playBtn.classList.add('is-playing');
+                                playBtn.setAttribute('aria-label', 'Pause video');
                             }
                         });
 
                         // Mute/Unmute Button
                         const muteBtn = document.createElement('button');
-                        muteBtn.className = 'yt-btn mute-btn';
-                        muteBtn.textContent = 'unmute'; // Starts muted
+                        muteBtn.className = 'yt-btn mute-btn is-muted';
+                        muteBtn.type = 'button';
+                        muteBtn.setAttribute('aria-label', 'Unmute video');
 
                         muteBtn.addEventListener('click', (e) => {
                             e.stopPropagation();
                             if (playerInstance.isMuted()) {
                                 playerInstance.unMute();
-                                muteBtn.textContent = 'mute';
+                                muteBtn.classList.remove('is-muted');
+                                muteBtn.setAttribute('aria-label', 'Mute video');
                             } else {
                                 playerInstance.mute();
-                                muteBtn.textContent = 'unmute';
+                                muteBtn.classList.add('is-muted');
+                                muteBtn.setAttribute('aria-label', 'Unmute video');
                             }
                         });
 
                         // External YouTube Link
                         const ytLink = document.createElement('a');
                         ytLink.className = 'yt-btn yt-link';
-                        ytLink.textContent = 'youtube ↗';
+                        ytLink.setAttribute('aria-label', 'Open on YouTube');
                         ytLink.href = `https://www.youtube.com/watch?v=${videoId}`;
                         ytLink.target = '_blank';
                         ytLink.rel = 'noopener noreferrer';
@@ -163,9 +169,11 @@ class App {
                             const playBtn = wrapper.querySelector('.play-btn');
                             if (playBtn) {
                                 if (event.data === YT.PlayerState.PLAYING) {
-                                    playBtn.textContent = 'pause';
+                                    playBtn.classList.add('is-playing');
+                                    playBtn.setAttribute('aria-label', 'Pause video');
                                 } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
-                                    playBtn.textContent = 'play';
+                                    playBtn.classList.remove('is-playing');
+                                    playBtn.setAttribute('aria-label', 'Play video');
                                 }
                             }
                         }
