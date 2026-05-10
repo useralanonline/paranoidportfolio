@@ -90,92 +90,11 @@ class App {
                         playerInstance.mute();
                         playerInstance.playVideo();
 
-                        // Create custom control bar overlay
-                        const controlsOverlay = document.createElement('div');
-                        controlsOverlay.className = 'yt-custom-controls';
-
-                        // Play/Pause Button
-                        const playBtn = document.createElement('button');
-                        playBtn.className = 'yt-btn play-btn is-playing';
-                        playBtn.type = 'button';
-                        playBtn.setAttribute('aria-label', 'Pause video');
-
-                        playBtn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            const state = playerInstance.getPlayerState();
-                            if (state === YT.PlayerState.PLAYING) {
-                                playerInstance.pauseVideo();
-                                playBtn.classList.remove('is-playing');
-                                playBtn.setAttribute('aria-label', 'Play video');
-                            } else {
-                                playerInstance.playVideo();
-                                playBtn.classList.add('is-playing');
-                                playBtn.setAttribute('aria-label', 'Pause video');
-                            }
-                        });
-
-                        // Mute/Unmute Button
-                        const muteBtn = document.createElement('button');
-                        muteBtn.className = 'yt-btn mute-btn is-muted';
-                        muteBtn.type = 'button';
-                        muteBtn.setAttribute('aria-label', 'Unmute video');
-
-                        muteBtn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            if (playerInstance.isMuted()) {
-                                playerInstance.unMute();
-                                muteBtn.classList.remove('is-muted');
-                                muteBtn.setAttribute('aria-label', 'Mute video');
-                            } else {
-                                playerInstance.mute();
-                                muteBtn.classList.add('is-muted');
-                                muteBtn.setAttribute('aria-label', 'Unmute video');
-                            }
-                        });
-
-                        // External YouTube Link
-                        const ytLink = document.createElement('a');
-                        ytLink.className = 'yt-btn yt-link';
-                        ytLink.setAttribute('aria-label', 'Open on YouTube');
-                        ytLink.href = `https://www.youtube.com/watch?v=${videoId}`;
-                        ytLink.target = '_blank';
-                        ytLink.rel = 'noopener noreferrer';
-
-                        // Prevent link click from affecting the iframe wrapper
-                        ytLink.addEventListener('click', (e) => e.stopPropagation());
-
-                        controlsOverlay.appendChild(playBtn);
-                        controlsOverlay.appendChild(muteBtn);
-                        controlsOverlay.appendChild(ytLink);
-
-                        // Use the new iframe element to find the wrapper, because the 
-                        // original 'el' div was destroyed by the YouTube API
-                        const playerIframe = playerInstance.getIframe();
-                        const iframeWrapper = playerIframe ? playerIframe.closest('.iframe-wrapper') : null;
-
-                        if (iframeWrapper) {
-                            iframeWrapper.appendChild(controlsOverlay);
-                        }
                     },
                     'onStateChange': (event) => {
                         // Fallback to force loop if playlist param acts up
                         if (event.data === YT.PlayerState.ENDED) {
                             event.target.playVideo();
-                        }
-
-                        // Sync play button state if video pauses/plays externally or buffering
-                        const wrapper = event.target.getIframe().closest('.iframe-wrapper');
-                        if (wrapper) {
-                            const playBtn = wrapper.querySelector('.play-btn');
-                            if (playBtn) {
-                                if (event.data === YT.PlayerState.PLAYING) {
-                                    playBtn.classList.add('is-playing');
-                                    playBtn.setAttribute('aria-label', 'Pause video');
-                                } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
-                                    playBtn.classList.remove('is-playing');
-                                    playBtn.setAttribute('aria-label', 'Play video');
-                                }
-                            }
                         }
                     }
                 }
@@ -285,13 +204,17 @@ class App {
         const heroContent = document.querySelector('.hero-content');
         if (!heroContent) return;
 
+        const fadeDistance = 180;
+
+        const updateHeroProgress = () => {
+            const progress = Math.min(Math.max(window.scrollY / fadeDistance, 0), 1);
+            heroContent.style.setProperty('--hero-scroll-progress', progress.toFixed(3));
+        };
+
+        updateHeroProgress();
+
         window.addEventListener('scroll', () => {
-            // Trigger the fade, blur and color inversion when scrolled down past 50px
-            if (window.scrollY > 50) {
-                heroContent.classList.add('is-scrolled');
-            } else {
-                heroContent.classList.remove('is-scrolled');
-            }
+            updateHeroProgress();
         });
     }
 

@@ -42,17 +42,20 @@
 
 /* Hero Section */
 .hero-section {
-    min-height: calc(100vh - var(--space-xl));
+    min-height: 130vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     position: relative;
 }
 
 .hero-content {
     z-index: 10;
     width: max-content;
-    position: relative; /* Context for absolute positioning of children */
+    position: sticky; /* Context for absolute positioning of children */
+    top: 50%;
+    transform: translateY(-50%);
+    --hero-scroll-progress: 0;
 }
 
 /* Base styles for both states */
@@ -63,7 +66,7 @@
 
 /* Original text visible initially */
 .hero-state-original {
-    opacity: 1;
+    opacity: calc(1 - var(--hero-scroll-progress));
 }
 
 /* Scrolled text hidden initially */
@@ -71,16 +74,16 @@
     position: absolute;
     top: 0;
     left: 0;
-    opacity: 0;
+    opacity: var(--hero-scroll-progress);
 }
 
 /* Triggered by JS class */
 .hero-content.is-scrolled .hero-state-original {
-    opacity: 0;
+    opacity: calc(1 - var(--hero-scroll-progress));
 }
 
 .hero-content.is-scrolled .hero-state-scrolled {
-    opacity: 1;
+    opacity: var(--hero-scroll-progress);
 }
 
 .scroll-indicator {
