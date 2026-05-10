@@ -14,7 +14,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="css/main.css?v=9">
     <link rel="stylesheet" href="css/grid.css?v=8">
-    <link rel="stylesheet" href="css/components.css?v=6">
+    <link rel="stylesheet" href="css/components.css?v=7">
 </head>
 
 <body class="is-loading">
@@ -187,12 +187,16 @@
 
             <div class="lightbox-content">
                 <img src="" alt="Fullscreen image preview" id="lightboxImage">
+                <div class="lightbox-video" id="lightboxVideoWrapper" aria-label="Fullscreen video preview">
+                    <iframe id="lightboxVideo" title="Fullscreen video preview"
+                        allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- JS -->
-    <script src="js/main.js?v=3" defer></script>
+    <script src="js/main.js?v=4" defer></script>
 </body>
 
 </html>

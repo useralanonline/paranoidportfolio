@@ -88,6 +88,7 @@
     padding-bottom: 56.25%;
     /* 16:9 Aspect Ratio */
     height: 0;
+    cursor: zoom-in;
 }
 
 .iframe-wrapper iframe {
@@ -185,6 +186,34 @@
     object-fit: contain;
     display: block;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-content.is-video {
+    width: min(90vw, 1200px);
+    aspect-ratio: 16 / 9;
+    max-height: 82vh;
+}
+
+.lightbox-content.is-video img {
+    display: none;
+}
+
+.lightbox-video {
+    display: none;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-content.is-video .lightbox-video {
+    display: block;
+}
+
+.lightbox-video iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
 }
 
 /* Lightbox Close Button */

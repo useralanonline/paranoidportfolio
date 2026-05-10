@@ -63,6 +63,11 @@ class App {
         playerElements.forEach(el => {
             const videoId = el.dataset.videoId;
             const wrapper = el.closest('.media-container');
+            const iframeWrapper = el.closest('.iframe-wrapper');
+
+            if (iframeWrapper) {
+                iframeWrapper.dataset.videoId = videoId;
+            }
 
             const player = new YT.Player(el, {
                 videoId: videoId,
@@ -286,7 +291,11 @@ class App {
         this.lightbox = document.getElementById('imageLightbox');
         if (!this.lightbox) return;
 
+        this.lightboxMode = 'image';
         this.lightboxImage = document.getElementById('lightboxImage');
+        this.lightboxContent = this.lightbox.querySelector('.lightbox-content');
+        this.lightboxVideoWrapper = document.getElementById('lightboxVideoWrapper');
+        this.lightboxVideo = document.getElementById('lightboxVideo');
         this.lightboxClose = document.querySelector('.lightbox-close');
         this.lightboxPrev = document.querySelector('.lightbox-prev');
         this.lightboxNext = document.querySelector('.lightbox-next');
@@ -294,12 +303,29 @@ class App {
         // Select all images inside media-containers (ignores videos/iframes)
         // Store as array for easy indexing
         this.galleryImages = Array.from(document.querySelectorAll('.media-container img'));
+        this.galleryVideos = Array.from(document.querySelectorAll('.iframe-wrapper'));
         this.currentImageIndex = 0;
+        this.currentVideoIndex = 0;
 
         this.galleryImages.forEach((img, index) => {
             img.addEventListener('click', () => {
                 this.currentImageIndex = index;
                 this.openLightbox(img.src, img.alt);
+            });
+        });
+
+        this.galleryVideos.forEach((videoWrapper, index) => {
+            const playerPlaceholder = videoWrapper.querySelector('.youtube-player');
+            if (playerPlaceholder && playerPlaceholder.dataset.videoId) {
+                videoWrapper.dataset.videoId = playerPlaceholder.dataset.videoId;
+            }
+
+            videoWrapper.addEventListener('click', () => {
+                const videoId = videoWrapper.dataset.videoId;
+                if (!videoId) return;
+
+                this.currentVideoIndex = index;
+                this.openVideoLightbox(videoId);
             });
         });
 
@@ -330,9 +356,17 @@ class App {
             if (e.key === 'Escape') {
                 this.closeLightbox();
             } else if (e.key === 'ArrowLeft') {
-                this.prevImage();
+                if (this.lightboxMode === 'video') {
+                    this.prevVideo();
+                } else {
+                    this.prevImage();
+                }
             } else if (e.key === 'ArrowRight') {
-                this.nextImage();
+                if (this.lightboxMode === 'video') {
+                    this.nextVideo();
+                } else {
+                    this.nextImage();
+                }
             }
         });
     }
@@ -340,11 +374,33 @@ class App {
     openLightbox(src, alt) {
         if (!this.lightbox || !this.lightboxImage) return;
 
+        this.lightboxMode = 'image';
+        if (this.lightboxContent) this.lightboxContent.classList.remove('is-video');
+        if (this.lightboxVideo) this.lightboxVideo.src = '';
+
         // Set source early so it begins rendering
         this.lightboxImage.src = src;
         this.lightboxImage.alt = alt || "Fullscreen Image";
 
         // Show lightbox
+        this.lightbox.classList.add('is-active');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
+
+    openVideoLightbox(videoId) {
+        if (!this.lightbox || !this.lightboxVideo) return;
+
+        this.lightboxMode = 'video';
+        if (this.lightboxContent) this.lightboxContent.classList.add('is-video');
+        if (this.lightboxImage) this.lightboxImage.src = '';
+
+        this.ytPlayers.forEach(player => {
+            if (player && typeof player.pauseVideo === 'function') {
+                player.pauseVideo();
+            }
+        });
+
+        this.lightboxVideo.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&rel=0&modestbranding=1&playsinline=1`;
         this.lightbox.classList.add('is-active');
         document.body.style.overflow = 'hidden'; // Prevent background scrolling
     }
@@ -365,11 +421,27 @@ class App {
         this.lightboxImage.alt = nextImg.alt;
     }
 
+    prevVideo() {
+        if (!this.galleryVideos.length) return;
+        this.currentVideoIndex = (this.currentVideoIndex - 1 + this.galleryVideos.length) % this.galleryVideos.length;
+        const prevVideoId = this.galleryVideos[this.currentVideoIndex].dataset.videoId;
+        if (prevVideoId) this.openVideoLightbox(prevVideoId);
+    }
+
+    nextVideo() {
+        if (!this.galleryVideos.length) return;
+        this.currentVideoIndex = (this.currentVideoIndex + 1) % this.galleryVideos.length;
+        const nextVideoId = this.galleryVideos[this.currentVideoIndex].dataset.videoId;
+        if (nextVideoId) this.openVideoLightbox(nextVideoId);
+    }
+
     closeLightbox() {
         if (!this.lightbox) return;
 
         this.lightbox.classList.remove('is-active');
         document.body.style.overflow = ''; // Restore scrolling
+        if (this.lightboxContent) this.lightboxContent.classList.remove('is-video');
+        if (this.lightboxVideo) this.lightboxVideo.src = '';
 
         // Clear src after transition so it doesn't ghost on next open
         setTimeout(() => {
