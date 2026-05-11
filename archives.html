@@ -8,7 +8,7 @@
     <meta name="description" content="Archives for imsoparanoid.">
 
     <link rel="stylesheet" href="css/main.css?v=9">
-    <link rel="stylesheet" href="css/grid.css?v=9">
+    <link rel="stylesheet" href="css/grid.css?v=10">
     <link rel="stylesheet" href="css/components.css?v=11">
 </head>
 
@@ -99,9 +99,23 @@
                 </div>
             </section>
         </main>
+
+        <div class="lightbox" id="imageLightbox">
+            <button class="lightbox-close" aria-label="Close fullscreen image">close</button>
+            <button class="lightbox-nav lightbox-prev" aria-label="Previous image">prev</button>
+            <button class="lightbox-nav lightbox-next" aria-label="Next image">next</button>
+
+            <div class="lightbox-content">
+                <img src="" alt="Fullscreen image preview" id="lightboxImage">
+                <div class="lightbox-video" id="lightboxVideoWrapper" aria-label="Fullscreen video preview">
+                    <iframe id="lightboxVideo" title="Fullscreen video preview"
+                        allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <script src="js/main.js?v=9" defer></script>
+    <script src="js/main.js?v=10" defer></script>
 </body>
 
 </html>
