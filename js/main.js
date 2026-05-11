@@ -202,6 +202,7 @@ class App {
 
     initScrollEffects() {
         const heroContent = document.querySelector('.hero-content');
+        const pageSwitch = document.querySelector('.page-switch');
         if (!heroContent) return;
 
         const fadeDistance = 180;
@@ -209,6 +210,9 @@ class App {
         const updateHeroProgress = () => {
             const progress = Math.min(Math.max(window.scrollY / fadeDistance, 0), 1);
             heroContent.style.setProperty('--hero-scroll-progress', progress.toFixed(3));
+            if (pageSwitch) {
+                pageSwitch.style.setProperty('--hero-scroll-progress', progress.toFixed(3));
+            }
         };
 
         updateHeroProgress();
@@ -312,6 +316,7 @@ class App {
                 }
             }
         });
+
     }
 
     openLightbox(src, alt) {
