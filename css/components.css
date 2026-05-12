@@ -54,6 +54,7 @@
     grid-template-columns: 1fr 1fr;
     width: min(72vw, 360px);
     border: 1px solid currentColor;
+    border-radius: 999px;
     color: var(--clr-white);
     font-size: clamp(0.82rem, 2.2vw, 1.05rem);
     letter-spacing: 0.04em;
@@ -61,6 +62,7 @@
     text-transform: lowercase;
     isolation: isolate;
     position: absolute;
+    overflow: hidden;
 }
 
 .page-switch::before {
@@ -71,12 +73,18 @@
     left: 0;
     width: 50%;
     background: var(--clr-white);
+    border-radius: inherit;
     z-index: -1;
     transition: transform var(--transition-smooth);
 }
 
-.page-switch.is-archives::before {
+.page-switch.is-archives::before,
+.page-switch.is-switching-to-archives::before {
     transform: translateX(100%);
+}
+
+.page-switch.is-switching-to-selected::before {
+    transform: translateX(0);
 }
 
 .page-switch a {

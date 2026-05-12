@@ -43,6 +43,7 @@ class App {
         this.initLazyLoading();
         this.initLightbox();
         this.initScrollEffects();
+        this.initPageSwitch();
 
         // Rebind hover effects on resize if needed
         window.addEventListener('resize', () => {
@@ -56,6 +57,29 @@ class App {
     }
 
     // Navigation functionality removed for single-page architecture
+
+    initPageSwitch() {
+        const pageSwitch = document.querySelector('.page-switch');
+        if (!pageSwitch) return;
+
+        pageSwitch.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                if (link.classList.contains('is-active')) return;
+
+                const href = link.getAttribute('href');
+                if (!href) return;
+
+                e.preventDefault();
+                const switchingToArchives = href.includes('archives');
+                pageSwitch.classList.toggle('is-switching-to-archives', switchingToArchives);
+                pageSwitch.classList.toggle('is-switching-to-selected', !switchingToArchives);
+
+                window.setTimeout(() => {
+                    window.location.href = href;
+                }, 260);
+            });
+        });
+    }
 
     initYouTubePlayers() {
         const playerElements = document.querySelectorAll('.youtube-player');
