@@ -50,42 +50,65 @@
     top: calc(60px + 1rem);
     left: var(--space-md);
     z-index: 100;
-    display: flex;
-    gap: 1rem;
-    font-size: clamp(1.05rem, 3.2vw, 1.45rem);
-    letter-spacing: 0.06em;
-    line-height: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: min(72vw, 360px);
+    border: 1px solid currentColor;
+    color: var(--clr-white);
+    font-size: clamp(0.82rem, 2.2vw, 1.05rem);
+    letter-spacing: 0.04em;
+    line-height: 1.1;
     text-transform: lowercase;
-    --hero-scroll-progress: 0;
+    isolation: isolate;
+    position: absolute;
+}
+
+.page-switch::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 50%;
+    background: var(--clr-white);
+    z-index: -1;
+    transition: transform var(--transition-smooth);
+}
+
+.page-switch.is-archives::before {
+    transform: translateX(100%);
 }
 
 .page-switch a {
-    opacity: 0.45;
-    position: relative;
-    transition: opacity var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 0.55rem 0.75rem;
+    color: var(--clr-white);
+    text-align: center;
+    transition: color var(--transition-fast), opacity var(--transition-fast);
 }
 
-.page-switch a:hover,
+.page-switch a:hover {
+    opacity: 0.72;
+}
+
 .page-switch a.is-active {
-    opacity: 1;
+    color: var(--clr-black);
 }
 
-.page-switch a.is-active {
-    text-decoration: underline;
-    text-underline-offset: 0.25em;
-}
+@media (max-width: 767px) {
+    .page-switch {
+        top: calc(60px + 0.75rem);
+        width: min(68vw, 300px);
+        font-size: 0.78rem;
+    }
 
-.switch-state-original {
-    opacity: calc(1 - var(--hero-scroll-progress));
-}
-
-.switch-state-scrolled {
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: var(--hero-scroll-progress);
-    -webkit-text-fill-color: transparent;
-    -webkit-text-stroke: 1px currentColor;
+    .page-switch a {
+        min-height: 30px;
+        padding: 0.48rem 0.55rem;
+    }
 }
 
 .empty-page {
