@@ -128,22 +128,19 @@ class App {
     }
 
     initRandomLayout() {
-        // Find the main portfolio grid container
-        const gridContainer = document.querySelector('.avant-garde-grid');
+        const gridContainer = document.querySelector('.avant-garde-grid, .archive-grid');
         if (!gridContainer) return;
 
-        // Get all items as an array
-        const items = Array.from(gridContainer.querySelectorAll('.grid-item'));
+        const itemSelector = gridContainer.classList.contains('archive-grid') ? '.archive-item' : '.grid-item';
+        const items = Array.from(gridContainer.querySelectorAll(itemSelector));
+        if (items.length < 2) return;
 
         // Fisher-Yates Shuffle Algorithm
         for (let i = items.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            // Swap in array
             [items[i], items[j]] = [items[j], items[i]];
         }
 
-        // Re-append to DOM in the new random order
-        // Note: appendChild physically moves existing elements rather than cloning them
         items.forEach(item => {
             gridContainer.appendChild(item);
         });
