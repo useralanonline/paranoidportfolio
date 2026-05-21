@@ -198,6 +198,40 @@ class App {
 
         if (!mediaContainers.length) return;
 
+        const markLoaded = (container) => {
+            container.classList.add('is-loaded');
+        };
+
+        const waitForMedia = (container) => {
+            const image = container.querySelector('img');
+            const iframeWrapper = container.querySelector('.iframe-wrapper');
+            const iframe = container.querySelector('iframe');
+
+            if (image) {
+                if (image.complete) {
+                    markLoaded(container);
+                    return;
+                }
+
+                image.addEventListener('load', () => markLoaded(container), { once: true });
+                image.addEventListener('error', () => markLoaded(container), { once: true });
+                return;
+            }
+
+            if (iframe) {
+                iframe.addEventListener('load', () => markLoaded(container), { once: true });
+                setTimeout(() => markLoaded(container), 1600);
+                return;
+            }
+
+            if (iframeWrapper) {
+                setTimeout(() => markLoaded(container), 1200);
+                return;
+            }
+
+            markLoaded(container);
+        };
+
         const observerOptions = {
             root: null,
             rootMargin: '50px',
@@ -208,10 +242,7 @@ class App {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const container = entry.target;
-                    // Simulate loading delay for effect, or wait for img complete
-                    setTimeout(() => {
-                        container.classList.add('is-loaded');
-                    }, 200);
+                    waitForMedia(container);
                     observer.unobserve(container);
                 }
             });
