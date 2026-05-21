@@ -21,8 +21,7 @@
         grid-template-columns: repeat(2, 1fr);
         gap: var(--space-md);
         padding: var(--space-xl) 0;
-        align-items: center;
-        /* helps center differently sized aspect ratios within the row */
+        align-items: start;
     }
 }
 
@@ -36,6 +35,7 @@
 .grid-item {
     width: 100%;
     display: flex;
+    align-items: flex-start;
     justify-content: center;
 }
 
