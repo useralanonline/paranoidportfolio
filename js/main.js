@@ -114,6 +114,9 @@ class App {
                         // Ensure it plays and is muted
                         playerInstance.mute();
                         playerInstance.playVideo();
+                        if (wrapper) {
+                            wrapper.classList.add('is-loaded');
+                        }
 
                     },
                     'onStateChange': (event) => {
@@ -132,9 +135,17 @@ class App {
         const gridContainer = document.querySelector('.avant-garde-grid, .archive-grid');
         if (!gridContainer) return;
 
+        if (gridContainer.classList.contains('archive-grid')) {
+            this.markGridLayoutReady(gridContainer);
+            return;
+        }
+
         const itemSelector = gridContainer.classList.contains('archive-grid') ? '.archive-item' : '.grid-item';
         const items = Array.from(gridContainer.querySelectorAll(itemSelector));
-        if (items.length < 2) return;
+        if (items.length < 2) {
+            this.markGridLayoutReady(gridContainer);
+            return;
+        }
 
         // Fisher-Yates Shuffle Algorithm
         for (let i = items.length - 1; i > 0; i--) {
@@ -144,6 +155,14 @@ class App {
 
         items.forEach(item => {
             gridContainer.appendChild(item);
+        });
+
+        this.markGridLayoutReady(gridContainer);
+    }
+
+    markGridLayoutReady(gridContainer) {
+        window.requestAnimationFrame(() => {
+            gridContainer.classList.add('is-layout-ready');
         });
     }
 
@@ -173,6 +192,9 @@ class App {
         const videoInteractables = document.querySelectorAll('.iframe-wrapper');
 
         interactables.forEach(el => {
+            if (el.dataset.cursorBound === 'true') return;
+            el.dataset.cursorBound = 'true';
+
             el.addEventListener('mouseenter', () => {
                 if (this.cursorOutline) this.cursorOutline.classList.add('hovering');
             });
@@ -182,6 +204,9 @@ class App {
         });
 
         videoInteractables.forEach(el => {
+            if (el.dataset.videoCursorBound === 'true') return;
+            el.dataset.videoCursorBound = 'true';
+
             el.addEventListener('mouseenter', () => {
                 if (this.cursorDot) this.cursorDot.classList.add('video-hovering');
                 if (this.cursorOutline) this.cursorOutline.classList.add('video-hovering');
@@ -208,10 +233,7 @@ class App {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const container = entry.target;
-                    // Simulate loading delay for effect, or wait for img complete
-                    setTimeout(() => {
-                        container.classList.add('is-loaded');
-                    }, 200);
+                    this.revealMediaContainer(container);
                     observer.unobserve(container);
                 }
             });
@@ -220,6 +242,31 @@ class App {
         mediaContainers.forEach(container => {
             mediaObserver.observe(container);
         });
+    }
+
+    revealMediaContainer(container) {
+        const image = container.querySelector('img');
+
+        if (!image) {
+            window.setTimeout(() => {
+                container.classList.add('is-loaded');
+            }, 200);
+            return;
+        }
+
+        const reveal = () => container.classList.add('is-loaded');
+
+        if (image.complete && image.naturalWidth > 0) {
+            if (typeof image.decode === 'function') {
+                image.decode().then(reveal).catch(reveal);
+            } else {
+                reveal();
+            }
+            return;
+        }
+
+        image.addEventListener('load', reveal, { once: true });
+        image.addEventListener('error', reveal, { once: true });
     }
 
     initScrollEffects() {

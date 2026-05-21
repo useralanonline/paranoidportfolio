@@ -107,15 +107,27 @@
 }
 
 @media (max-width: 767px) {
+    .social-links {
+        top: calc(60px + 0.75rem);
+        right: var(--space-sm);
+        gap: 0.65rem;
+    }
+
+    .social-links a {
+        width: 17px;
+        height: 17px;
+    }
+
     .page-switch {
         top: calc(60px + 0.75rem);
-        width: min(68vw, 300px);
-        font-size: 0.78rem;
+        left: var(--space-sm);
+        width: min(56vw, 220px);
+        font-size: 0.68rem;
     }
 
     .page-switch a {
-        min-height: 30px;
-        padding: 0.48rem 0.55rem;
+        min-height: 28px;
+        padding: 0.42rem 0.42rem;
     }
 }
 
@@ -135,6 +147,15 @@
 .archive-item {
     break-inside: avoid;
     margin: 0 0 var(--space-md);
+}
+
+.archive-item .media-container {
+    aspect-ratio: 20 / 27;
+}
+
+.archive-item .media-container img {
+    opacity: 1;
+    transform: none;
 }
 
 @media (min-width: 768px) {
@@ -223,6 +244,7 @@
     transition: opacity var(--transition-smooth), visibility var(--transition-smooth);
     cursor: zoom-out;
     /* Indicate it can be closed by clicking */
+    --lightbox-control-color: #fcfcfc;
 }
 
 .lightbox.is-active {
@@ -285,7 +307,7 @@
     right: var(--space-md);
     background: transparent;
     border: none;
-    color: var(--clr-white);
+    color: var(--lightbox-control-color);
     font-family: inherit;
     font-size: 1rem;
     text-transform: lowercase;
@@ -300,6 +322,12 @@
 
 .lightbox-close:hover {
     opacity: 1;
+}
+
+.lightbox-close:focus-visible,
+.lightbox-nav:focus-visible {
+    outline: 1px solid var(--lightbox-control-color);
+    outline-offset: 4px;
 }
 
 /* Make gallery images look clickable */
@@ -350,7 +378,7 @@
     display: block;
     width: 20px;
     height: 20px;
-    border: 4px solid #ffffff;
+    border: 4px solid var(--lightbox-control-color);
     border-top: none;
     border-right: none;
 }
