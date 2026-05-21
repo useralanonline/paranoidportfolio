@@ -43,6 +43,7 @@ class App {
         this.initLazyLoading();
         this.initLightbox();
         this.initScrollEffects();
+        this.initHeroReveal();
         this.initPageSwitch();
 
         // Rebind hover effects on resize if needed
@@ -240,6 +241,15 @@ class App {
 
         window.addEventListener('scroll', () => {
             updateHeroProgress();
+        });
+    }
+
+    initHeroReveal() {
+        const heroContent = document.querySelector('.hero-content');
+        if (!heroContent) return;
+
+        window.requestAnimationFrame(() => {
+            heroContent.classList.add('is-hero-revealed');
         });
     }
 

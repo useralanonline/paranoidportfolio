@@ -77,6 +77,42 @@
     opacity: var(--hero-scroll-progress);
 }
 
+.hero-reveal-line {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+}
+
+.hero-reveal-word {
+    display: inline-block;
+    transform: translateY(112%);
+    will-change: transform;
+}
+
+.hero-content.is-hero-revealed .hero-reveal-word {
+    animation: heroMaskedReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms) both;
+}
+
+@keyframes heroMaskedReveal {
+    from {
+        transform: translateY(112%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-reveal-word {
+        transform: translateY(0);
+    }
+
+    .hero-content.is-hero-revealed .hero-reveal-word {
+        animation: none;
+    }
+}
+
 /* Triggered by JS class */
 .hero-content.is-scrolled .hero-state-original {
     opacity: calc(1 - var(--hero-scroll-progress));
