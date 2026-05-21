@@ -155,28 +155,6 @@
     position: relative;
     overflow: hidden;
     background-color: var(--clr-grey-light);
-    isolation: isolate;
-}
-
-.media-container::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    pointer-events: none;
-    background:
-        linear-gradient(90deg, transparent, rgba(252, 252, 252, 0.24), transparent),
-        linear-gradient(135deg, rgba(5, 5, 5, 0.08), rgba(5, 5, 5, 0.2));
-    background-size: 220% 100%, 100% 100%;
-    opacity: 1;
-    transform: translateX(-28%);
-    animation: mediaSkeleton 1.25s ease-in-out infinite;
-    transition: opacity var(--transition-smooth), visibility var(--transition-smooth);
-}
-
-.media-container.is-loaded::before {
-    opacity: 0;
-    visibility: hidden;
 }
 
 .media-container img,
@@ -190,12 +168,6 @@
     /* Slight scale for parallax/reveal effect */
     transition: transform var(--transition-cinematic), opacity var(--transition-smooth);
     opacity: 0;
-}
-
-.iframe-wrapper::before {
-    content: '';
-    display: block;
-    padding-bottom: 56.25%;
 }
 
 .media-container.is-loaded img,
@@ -217,6 +189,9 @@
 .iframe-wrapper {
     position: relative;
     width: 100%;
+    padding-bottom: 56.25%;
+    /* 16:9 Aspect Ratio */
+    height: 0;
     cursor: zoom-in;
 }
 
@@ -229,23 +204,6 @@
     border: 0;
     pointer-events: none;
     /* Blocks native YouTube clicking/pausing/UI overlays completely */
-}
-
-@keyframes mediaSkeleton {
-    from {
-        background-position: 160% 0, 0 0;
-    }
-
-    to {
-        background-position: -60% 0, 0 0;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .media-container::before {
-        animation: none;
-        transform: none;
-    }
 }
 
 /* Fullscreen Image Lightbox */
