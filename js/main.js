@@ -271,24 +271,27 @@ class App {
 
     initScrollEffects() {
         const heroContent = document.querySelector('.hero-content');
-        const pageSwitch = document.querySelector('.page-switch');
         if (!heroContent) return;
 
-        const fadeDistance = 180;
+        const fadeStart = 40;
+        const fadeDistance = 440;
+        let scrollFrame = null;
 
         const updateHeroProgress = () => {
-            const progress = Math.min(Math.max(window.scrollY / fadeDistance, 0), 1);
+            const progress = Math.min(Math.max((window.scrollY - fadeStart) / fadeDistance, 0), 1);
             heroContent.style.setProperty('--hero-scroll-progress', progress.toFixed(3));
-            if (pageSwitch) {
-                pageSwitch.style.setProperty('--hero-scroll-progress', progress.toFixed(3));
-            }
         };
 
         updateHeroProgress();
 
         window.addEventListener('scroll', () => {
-            updateHeroProgress();
-        });
+            if (scrollFrame !== null) return;
+
+            scrollFrame = window.requestAnimationFrame(() => {
+                updateHeroProgress();
+                scrollFrame = null;
+            });
+        }, { passive: true });
     }
 
     initHeroReveal() {

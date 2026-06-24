@@ -58,29 +58,25 @@
     --hero-scroll-progress: 0;
 }
 
-/* Base styles for both states */
-.hero-state-original,
-.hero-state-scrolled {
-    transition: opacity 0.8s ease;
-}
-
-/* Original text visible initially */
 .hero-state-original {
     opacity: calc(1 - var(--hero-scroll-progress));
+    will-change: opacity;
 }
 
-/* Scrolled text hidden initially */
 .hero-state-scrolled {
     position: absolute;
     top: 0;
     left: 0;
     opacity: var(--hero-scroll-progress);
+    will-change: opacity;
 }
 
 .hero-reveal-line {
     display: inline-block;
     overflow: hidden;
     vertical-align: bottom;
+    padding-bottom: 0.18em;
+    margin-bottom: -0.18em;
 }
 
 .hero-reveal-word {
@@ -89,7 +85,11 @@
     will-change: transform;
 }
 
-.hero-content.is-hero-revealed .hero-reveal-word {
+.hero-state-scrolled .hero-reveal-word {
+    transform: translateY(0);
+}
+
+.hero-content.is-hero-revealed .hero-state-original .hero-reveal-word {
     animation: heroMaskedReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms) both;
 }
 
@@ -108,18 +108,10 @@
         transform: translateY(0);
     }
 
-    .hero-content.is-hero-revealed .hero-reveal-word {
+    .hero-content.is-hero-revealed .hero-state-original .hero-reveal-word {
         animation: none;
     }
-}
 
-/* Triggered by JS class */
-.hero-content.is-scrolled .hero-state-original {
-    opacity: calc(1 - var(--hero-scroll-progress));
-}
-
-.hero-content.is-scrolled .hero-state-scrolled {
-    opacity: var(--hero-scroll-progress);
 }
 
 .scroll-indicator {
