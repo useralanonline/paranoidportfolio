@@ -85,11 +85,7 @@
     will-change: transform;
 }
 
-.hero-state-scrolled .hero-reveal-word {
-    transform: translateY(0);
-}
-
-.hero-content.is-hero-revealed .hero-state-original .hero-reveal-word {
+.hero-content.is-hero-revealed .hero-reveal-word {
     animation: heroMaskedReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms) both;
 }
 
@@ -108,7 +104,7 @@
         transform: translateY(0);
     }
 
-    .hero-content.is-hero-revealed .hero-state-original .hero-reveal-word {
+    .hero-content.is-hero-revealed .hero-reveal-word {
         animation: none;
     }
 
