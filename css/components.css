@@ -56,6 +56,8 @@
     border: 1px solid currentColor;
     border-radius: 6px;
     color: var(--clr-white);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 700;
     font-size: clamp(0.82rem, 2.2vw, 1.05rem);
     letter-spacing: 0.04em;
     line-height: 1.1;
