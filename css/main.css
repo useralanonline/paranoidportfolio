@@ -10,6 +10,14 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: 'Inter Light';
+    src: url('../assets/fonts/Inter-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     /* Monochrome Palette (Inverted) */
     --clr-black: #fcfcfc;
@@ -18,7 +26,8 @@
     --clr-grey-light: #1a1a1a;
 
     /* Typography */
-    --font-primary: 'HelveticaNeue BlackCond', 'Helvetica Neue Black Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-primary: 'Inter Light', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-headline: 'HelveticaNeue BlackCond', 'Helvetica Neue Black Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
 
     /* Spacing */
@@ -44,6 +53,7 @@ body {
     background-color: var(--clr-black);
     color: var(--clr-white);
     font-family: var(--font-primary);
+    font-weight: 300;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
@@ -64,7 +74,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-weight: 700;
+    font-weight: 300;
     line-height: 1.1;
     text-transform: lowercase;
     letter-spacing: -0.02em;
@@ -90,6 +100,8 @@ a {
 
 /* Utilities */
 .stark-headline {
+    font-family: var(--font-headline);
+    font-weight: 700;
     font-size: clamp(3rem, 10vw, 12rem);
     line-height: 0.9;
 }
@@ -150,4 +162,13 @@ a {
     .cursor-outline {
         display: none;
     }
+}
+
+/* Form controls use the same light typography as surrounding text. */
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+    font-weight: 300;
 }
