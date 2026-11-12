@@ -48,7 +48,8 @@
 .page-switch {
     position: absolute;
     top: calc(60px + 1rem);
-    left: var(--space-md);
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 100;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -121,8 +122,8 @@
     }
 
     .page-switch {
-        top: calc(60px + 0.75rem);
-        left: var(--space-sm);
+        top: 1.25rem;
+        left: 50%;
         width: min(56vw, 220px);
         font-size: 0.68rem;
     }

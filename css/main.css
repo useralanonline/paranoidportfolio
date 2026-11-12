@@ -102,7 +102,7 @@ a {
 .stark-headline {
     font-family: var(--font-headline);
     font-weight: 700;
-    font-size: clamp(3rem, 10vw, 12rem);
+    font-size: clamp(3.15rem, 10.5vw, 12.6rem);
     line-height: 0.9;
 }
 
