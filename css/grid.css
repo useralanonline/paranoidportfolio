@@ -54,7 +54,7 @@
     width: max-content;
     max-width: 100%;
     align-self: center;
-    text-align: center;
+    text-align: left;
     position: sticky; /* Context for absolute positioning of children */
     top: 50%;
     transform: translateY(-50%);
