@@ -172,3 +172,22 @@ textarea {
     font-family: inherit;
     font-weight: 100;
 }
+
+/* Initial Selected Works entrance: white, page fade, then headline reveal. */
+.page-intro {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: #fff;
+    pointer-events: none;
+    animation: pageIntroFade 850ms ease-in-out 100ms both;
+}
+
+@keyframes pageIntroFade {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .page-intro { display: none; animation: none; }
+}

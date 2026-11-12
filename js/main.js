@@ -298,9 +298,25 @@ class App {
         const heroContent = document.querySelector('.hero-content');
         if (!heroContent) return;
 
-        window.requestAnimationFrame(() => {
+        const reveal = () => window.requestAnimationFrame(() => {
             heroContent.classList.add('is-hero-revealed');
         });
+        const intro = document.querySelector('.page-intro');
+        if (!intro || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            reveal();
+            return;
+        }
+
+        // The white fade finishes before the existing masked headline reveal starts.
+        let revealed = false;
+        const finishIntro = () => {
+            if (revealed) return;
+            revealed = true;
+            intro.remove();
+            reveal();
+        };
+        intro.addEventListener('animationend', finishIntro, { once: true });
+        window.setTimeout(finishIntro, 1400);
     }
 
     initLightbox() {
