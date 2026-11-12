@@ -57,7 +57,7 @@
     border-radius: 6px;
     color: var(--clr-white);
     font-family: var(--font-primary);
-    font-weight: 300;
+    font-weight: 100;
     font-size: clamp(0.82rem, 2.2vw, 1.05rem);
     letter-spacing: 0.04em;
     line-height: 1.1;
@@ -350,7 +350,7 @@
 .site-footer p {
     color: var(--clr-white);
     font-size: 0.78rem;
-    font-weight: 300;
+    font-weight: 100;
     letter-spacing: 0.12em;
     line-height: 1;
     opacity: 0.55;
