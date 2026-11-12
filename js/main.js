@@ -302,12 +302,19 @@ class App {
             heroContent.classList.add('is-hero-revealed');
         });
         const intro = document.querySelector('.page-intro');
-        if (!intro || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        if (!intro) {
+            reveal();
+            return;
+        }
+        // Always enter Selected Works at the hero, including on refresh.
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+        window.scrollTo(0, 0);
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            intro.remove();
             reveal();
             return;
         }
 
-        // The white fade finishes before the existing masked headline reveal starts.
         let revealed = false;
         const finishIntro = () => {
             if (revealed) return;
@@ -315,8 +322,17 @@ class App {
             intro.remove();
             reveal();
         };
-        intro.addEventListener('animationend', finishIntro, { once: true });
-        window.setTimeout(finishIntro, 1400);
+        // Hold white briefly after fonts are ready, then fade the page in.
+        const fontsReady = document.fonts ? document.fonts.ready : Promise.resolve();
+        Promise.race([fontsReady, new Promise(resolve => window.setTimeout(resolve, 800))])
+            .then(() => window.setTimeout(() => {
+                window.scrollTo(0, 0);
+                intro.addEventListener('transitionend', finishIntro, { once: true });
+                window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
+                    intro.classList.add('is-fading');
+                    window.setTimeout(finishIntro, 1350);
+                }));
+            }, 450));
     }
 
     initLightbox() {

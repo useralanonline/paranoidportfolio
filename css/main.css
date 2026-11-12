@@ -173,21 +173,20 @@ textarea {
     font-weight: 100;
 }
 
-/* Initial Selected Works entrance: white, page fade, then headline reveal. */
+
+/* Keep the white cover in place until the entrance sequence is ready. */
 .page-intro {
     position: fixed;
     inset: 0;
     z-index: 10000;
     background: #fff;
+    opacity: 1;
     pointer-events: none;
-    animation: pageIntroFade 850ms ease-in-out 100ms both;
 }
-
-@keyframes pageIntroFade {
-    from { opacity: 1; }
-    to { opacity: 0; }
+.page-intro.is-fading {
+    transition: opacity 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
 }
-
 @media (prefers-reduced-motion: reduce) {
-    .page-intro { display: none; animation: none; }
+    .page-intro { display: none; transition: none; }
 }
